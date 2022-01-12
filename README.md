@@ -6,6 +6,8 @@ Install mssql from here : https://docs.microsoft.com/en-us/sql/ssms/download-sql
 Install docker: https://docs.docker.com/desktop/windows/install/\ docker pull mcr.microsoft.com/mssql/server:2019-latest (sudo)
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Password1234!" -p 1433:1433 --name sql1 -h sql1 -d mcr.microsoft.com/mssql/server:2019-latest
 
+-- always check the docker image(running before you start app)
+
 
 MSSQL establish connection:
 Authentification: SQL Server Auth
