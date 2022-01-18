@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 
  
-
+async function login(credentials) {
+  return fetch('http://localhost:8080/game/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json())
+ }
 
 
 const Login = () => {
@@ -10,15 +19,11 @@ const Login = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const mesaj = {name, password};
-    fetch("http://localhost:8080/game/login", {
-   method: "POST",
-   headers: {
-     "Content-Type": "application/json"
-   },
-   body: JSON.stringify(mesaj)
- })
-   .then()
+    const mesaj = await login({
+      name,
+      password
+    })
+   
 
  
   }

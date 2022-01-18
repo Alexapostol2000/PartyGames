@@ -1,7 +1,7 @@
 const Navbar = () => {
     return (
 <nav className="navbar" >
-                        <h1 style = {{color: "#85BAA1"}}> PartyGames </h1>
+                        <h1 style = {{color: "#85BAA1", fontFamily: "fantasy"}}> PartyGames </h1>
                         <div className="links">
                             <a href="/" style={{
                                 color: "white",
