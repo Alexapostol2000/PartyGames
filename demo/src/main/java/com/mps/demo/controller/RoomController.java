@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,19 +18,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/room")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RoomController {
 
   @Autowired
   RoomService roomService;
 
   @PostMapping
-  public ResponseEntity<Room> create(@RequestBody Room room, @RequestHeader("Authorization") String userName) {
-    return ResponseEntity.ok(roomService.create(room, userName));
+  public ResponseEntity<Room> create(@RequestBody Room room, @RequestHeader("Authorization") String jwt) {
+    return ResponseEntity.ok(roomService.create(room, jwt));
   }
 
   @PutMapping
-  public ResponseEntity<Optional<Room>> update(@RequestBody Room room, @RequestHeader("Authorization") String userName) {
-    return ResponseEntity.ok(roomService.update(room, userName));
+  public ResponseEntity<Optional<Room>> update(@RequestBody Room room, @RequestHeader("Authorization") String jwt) {
+    return ResponseEntity.ok(roomService.update(room, jwt));
   }
 
   @GetMapping("/public")
