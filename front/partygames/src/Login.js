@@ -55,9 +55,17 @@ const Login = () => {
     </div>
     <div className="card-footer">
       <small className="text">
-          Don't have an account?
+          Don't have an account? 
           <a className="ml-2" href="/register">
               Register
+          </a>
+      </small>    
+    </div>
+    <div className="card-footer">
+      <small className="text">
+          Or login as guest!
+          <a className="ml-2" href="/account"> 
+              Guest
           </a>
       </small>    
     </div>
