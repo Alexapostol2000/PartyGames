@@ -11,3 +11,43 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+/* base styles */
+
+.navbar h1 {
+  color: #031D44;
+  margin-left: 30px;
+ 
+}
+
+.navbar .links {
+  margin-left: 30px;
+  font-family: "Quicksand";
+  align-items: end;
+}
+.navbar a {
+  margin-left: 10px;
+  margin-right: 5px;
+  text-decoration: none;
+  padding: 7px;
+  font-family: "Quicksand";
+}
+.navbar a:hover {
+  color: #57abd1;
+}
+/* .content {
+  margin: 0;
+  padding: 0;
+  max-width: 1000px;
+
+} */
+.navbar {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  margin: 0;
+  border-bottom: 1px solid #C4D6B0;
+  background-color: #631D76;
+}
+
