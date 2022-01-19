@@ -17,6 +17,7 @@ async function login(credentials) {
 const Login = ({setToken, token, setName}) => {
   const [name, setUserName] = useState("");
   const [password, setPassword] = useState("");
+
   console.log("mhm" + token);
   if(token) {
     return (
@@ -75,7 +76,7 @@ const Login = ({setToken, token, setName}) => {
     <div className="card-footer">
       <small className="text">
           Or login as guest!
-          <a className="ml-2" href="/account" > 
+          <a className="ml-2" href="/account"  > 
               Guest
           </a>
       </small>    
