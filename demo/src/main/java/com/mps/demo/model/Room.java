@@ -35,6 +35,7 @@ public class Room {
 
   private String gameName;
 
+  @NotNull
   private String adminName;
 
   @ManyToMany
