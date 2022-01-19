@@ -2,10 +2,12 @@ import React, {useState} from 'react'
 import { Button } from "bootstrap";
 import { Navigate } from "react-router";
 
-async function room(credentials) {
+
+async function room(credentials,token) {
   return fetch('http://localhost:8080/game/room', {
     method: 'POST',
     headers: {
+      'Authorization':  `${token}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(credentials)
@@ -25,8 +27,8 @@ const Account = ({ setToken, token, name }) => {
          name: room_name,
          roomType
 
-        });
-        setToken(retBody.token);
+        },token);
+        
 
 }
 
