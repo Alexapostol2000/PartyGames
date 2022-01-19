@@ -17,7 +17,7 @@ const Logout = ({setToken, token}) => {
   }
 
   return (
-    <div className="card shadow mb-4 mx-auto" style={{ width: '22rem', maxHeight: '40rem', marginTop: '5%', backgroundColor: '#57abd1' }}>
+    <div className="card shadow mb-4 mx-auto" style={{ width: '22rem', maxHeight: '40rem', marginTop: '5%', backgroundColor: '#85BAA1' }}>
     
       <div className="card-body text-center">
           <h6 className="card-title border-bottom mb-2 font-weight-bold">Are you sure you want to logout?</h6>   
