@@ -14,7 +14,7 @@ async function login(credentials) {
  }
 
 
-const Login = ({setToken, token}) => {
+const Login = ({setToken, token, setName}) => {
   const [name, setUserName] = useState("");
   const [password, setPassword] = useState("");
   console.log("mhm" + token);
@@ -32,6 +32,8 @@ const Login = ({setToken, token}) => {
     })
     console.log("inainte de set" + mesaj.jwt);
     setToken(mesaj.jwt);
+    setName(mesaj.name);
+    console.log ("nume" + mesaj.name);
 
 
  
@@ -73,7 +75,7 @@ const Login = ({setToken, token}) => {
     <div className="card-footer">
       <small className="text">
           Or login as guest!
-          <a className="ml-2" href="/account"> 
+          <a className="ml-2" href="/account" > 
               Guest
           </a>
       </small>    

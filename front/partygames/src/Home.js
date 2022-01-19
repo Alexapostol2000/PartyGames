@@ -4,7 +4,7 @@ const Home = () => {
        
 return (
     <>
-    <h1> Welcome to partyyyy! </h1>
+    <h1 style ={{margin:'10%'}}> Welcome to partyyyy! </h1>
     </>
 
 );}
