@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from "react-router-dom";
 
  
 async function login(credentials) {
@@ -13,17 +14,25 @@ async function login(credentials) {
  }
 
 
-const Login = () => {
+const Login = ({setToken, token}) => {
   const [name, setUserName] = useState("");
   const [password, setPassword] = useState("");
-
+  console.log("mhm" + token);
+  if(token) {
+    return (
+      <Navigate to="/account"/>
+    );
+  }
+  
   const handleSubmit = async e => {
     e.preventDefault();
     const mesaj = await login({
       name,
       password
     })
-   
+    console.log("inainte de set" + mesaj.jwt);
+    setToken(mesaj.jwt);
+
 
  
   }
