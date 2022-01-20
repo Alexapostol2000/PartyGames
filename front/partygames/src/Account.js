@@ -22,6 +22,8 @@ async function room(credentials,token) {
 const Account = ({ setToken, token, name }) => {
   const [room_name, setRoomName] = useState();
   const [roomType, setRoomType] = useState();
+  const [maxPlayers, setMaxPlayers] = useState();
+  const [roomPassword, setRoomPassword] = useState("");
   
   const [privateRooms, setPrivateRooms] = useState([]);
   const [publicRooms, setPublicRooms] = useState([]);
@@ -30,7 +32,9 @@ const Account = ({ setToken, token, name }) => {
     e.preventDefault();
         const retBody = await room({
          name: room_name,
-         roomType
+         roomType,
+         maxPlayerNum: maxPlayers,
+         password: roomPassword
 
         },token);
         
@@ -78,26 +82,29 @@ const Account = ({ setToken, token, name }) => {
   
     return (
       <>
-        <div class = "container"  style={{ width: '20rem', maxHeight: '40rem', margin: '5%',
+      <div class="row">
+      <div class="col-md-6">
+        <div class = "container"  style={{ width: '20rem', maxHeight: 'rem', margin: '5%',
         backgroundColor: '#85BAA1', alignContent:'center', borderRadius:'2rem',  borderColor:'#d3bcc0'}}  >
         <div className="card shadow mb-1 mx-auto text-center" />
                   <h5 class="card-title"> My account </h5>
                   <h6 class="card-subtitle mb-2 text-muted"> Nume player: {name} </h6>
                   <h6 class="card-subtitle mb-2 text-muted"> Total puncte: </h6>
-                  <button type="submit" style={{ backgroundColor: '#85BAA1', alignContent:'center', borderColor:'#d3bcc0', borderRadius:"2rem", margin:'5%'}} > 
-                  Create Room</button>
-                  <p> lista camere (acordeon) + buton on click enter room</p>
+                   
+              
                   
     </div>
     <div class = "container"  style={{ width: '20rem', maxHeight: '40rem', margin: '5%',
         backgroundColor: '#85BAA1', alignContent:'center', borderRadius:'2rem',  borderColor:'#d3bcc0'}}  >
        <div class="row" style ={{ alignContent: 'center', marginTop: '5%'}}> 
               
-              <div className="card mx-auto" style ={{backgroundColor: '#85BAA1', padding: '15px', width: '35rem'}}>
-              <h5 class="card-title" style ={{marginBottom:'20px'}}> Creare camera </h5>
+              <h5 class="card-title" style ={{marginTop:'7%'}}> Creare camera </h5>
                   <form class="row g-3" onSubmit={handleSubmit}>
                     <div class="col-md-12">
                       <input type="text" class="form-control" id="1" placeholder="Nume camera"  onChange={e => setRoomName(e.target.value)}/>
+                    </div>
+                    <div class="col-md-12">
+                      <input type="text" class="form-control" id="1" placeholder="Numar maxim jucatori"  onChange={e => setMaxPlayers(e.target.value)}/>
                     </div>
                  
                     <div class="col-12">
@@ -107,15 +114,26 @@ const Account = ({ setToken, token, name }) => {
                         <option>PRIVATE_ROOM</option>
                      
                       </select>
+                      {
+                        roomType === "PRIVATE_ROOM" ? (
+                          <div class="col-md-12" style ={{marginTop:'5%'}}>
+                          <input type="text" class="form-control" id="1" placeholder="Parola"  onChange={e => setRoomPassword(e.target.value)}/>
+                        </div>
+                        ) :
+                        (
+                          <> </>
+                        )
+                      }
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-primary" style ={{backgroundColor: '#85BAA1', alignContent:'center', borderColor:'#d3bcc0', borderRadius:"2rem", margin:'5%'}}>Create Room</button>
+                      <button type="submit" style={{ backgroundColor: '#85BAA1', alignContent:'center', borderColor:'#d3bcc0', borderRadius:"2rem", margin:'5%'}} > Create Room</button>
                     </div>
                   </form>
               </div>
-            </div>
+            
         </div>
-
+        </div>
+        <div class="col-md-6">
         {publicRooms.map((room) => {
             console.log(room);
 
@@ -143,6 +161,8 @@ const Account = ({ setToken, token, name }) => {
 
             );
         })} 
+        </div>
+        </div>
     </>
     );}
     export default Account;
