@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 async function register(credentials) {
   return fetch('http://localhost:8080/game/register', {
     method: 'POST',
@@ -15,6 +15,7 @@ async function register(credentials) {
 const Register = () => {
     const [name, setName] = useState();
     const [password, setPassword] = useState();
+    const [totalScore, setScore] = useState();
     const userRole = "ROLE_USER"
     
   const handleSubmit = async e => {
@@ -27,8 +28,10 @@ const Register = () => {
       userRole
     });
 
-
+    setScore(retBody.totalScore)
   }
+
+  
   
   return (
     
@@ -50,13 +53,16 @@ const Register = () => {
             <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
           </div>
 
-        
-
+          <button type="submit" className="btn btn-dark " style ={{backgroundColor:'#631D76'}}> Submit </button>
           
-          <button type="submit" className="btn btn-dark ">  Submit</button>
+ 
         </form>
-
-          
+        
+          {totalScore === 0 ? (
+            <Navigate to="/login"/>)
+            :
+            (<></>)
+          }
         </div>
         <div className="card-footer">
           <small className="text">

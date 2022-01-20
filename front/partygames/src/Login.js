@@ -60,7 +60,7 @@ const Login = ({setToken, token, setName}) => {
         <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
       </div>
       
-      <button type="submit" className="btn btn-dark">Submit</button>
+      <button type="submit" className="btn btn-dark" style ={{backgroundColor:'#631D76'}}>Submit</button>
     </form>
 
       
@@ -75,10 +75,8 @@ const Login = ({setToken, token, setName}) => {
     </div>
     <div className="card-footer">
       <small className="text">
-          Or login as guest!
-          <a className="ml-2" href="/account"  > 
-              Guest
-          </a>
+          Or login as guest using guest/guest!
+          
       </small>    
     </div>
   </div>   

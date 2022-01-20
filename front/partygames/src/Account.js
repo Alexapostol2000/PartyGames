@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Button } from "bootstrap";
 import { Navigate } from "react-router";
 import {format} from 'react-string-format'
-
+import { Link } from 'react-router-dom';
 async function room(credentials,token) {
   return fetch('http://localhost:8080/game/room', {
     method: 'POST',
@@ -28,6 +28,8 @@ const Account = ({ setToken, token, name }) => {
   const [privateRooms, setPrivateRooms] = useState([]);
   const [publicRooms, setPublicRooms] = useState([]);
 
+  //const [created, setCreated ] = useState(0);
+
   const handleSubmit = async e => {
     e.preventDefault();
         const retBody = await room({
@@ -37,8 +39,10 @@ const Account = ({ setToken, token, name }) => {
          password: roomPassword
 
         },token);
-        
-
+      
+      
+        console.log("aaaaaaaaa");
+        console.log("room.id" + retBody.id);
   }
 
   const getPublicRooms = (token) => {
@@ -76,6 +80,12 @@ const Account = ({ setToken, token, name }) => {
           <Navigate to="/login"/>
         );
     }
+    
+  // if (created) {
+  //   return (
+  //     <Navigate to={format('/room/{0}', created)} state={{ "room_id":created, name }}/>
+  //   )
+  // }
       
   console.log(publicRooms);
   console.log(privateRooms);
@@ -117,7 +127,7 @@ const Account = ({ setToken, token, name }) => {
                       {
                         roomType === "PRIVATE_ROOM" ? (
                           <div class="col-md-12" style ={{marginTop:'5%'}}>
-                          <input type="text" class="form-control" id="1" placeholder="Parola"  onChange={e => setRoomPassword(e.target.value)}/>
+                          <input type="password" class="form-control" id="1" placeholder="Parola"  onChange={e => setRoomPassword(e.target.value)}/>
                         </div>
                         ) :
                         (
@@ -140,7 +150,7 @@ const Account = ({ setToken, token, name }) => {
      
         {publicRooms.map((room) => {
             console.log(room);
-
+    
             return (
               <ol class="list-group ">
               <li class="list-group-item d-flex justify-content-between align-items-start" key = {room.id} style ={{ backgroundColor: '#85BAA1'}}>
@@ -152,7 +162,7 @@ const Account = ({ setToken, token, name }) => {
                   <b>Game:</b> {room.gameName}<br></br>
                   <b>Status:</b> 
                 </div>
-                <span ><button style={{ backgroundColor: '#85BAA1', alignContent:'center', borderColor:'#d3bcc0', borderRadius:"2rem"}}> Enter</button></span>
+                <Link to={format('/room/{0}', room.id)} state={{ "room_id":room.id, name }} className="btn btn-dark" style ={{backgroundColor:'#631D76'}}  >Enter</Link>
               </li>
               </ol>
               
@@ -183,7 +193,7 @@ const Account = ({ setToken, token, name }) => {
                   <b>Game:</b> {room.gameName}<br></br>
                   <b>Status:</b> 
                 </div>
-                <span ><button style={{ backgroundColor: '#85BAA1', alignContent:'center', borderColor:'#d3bcc0', borderRadius:"2rem"}}> Enter</button></span>
+                <Link to={format('/room/{0}', room.id)} state={{ "room_id":room.id, name }} className="btn btn-dark" style ={{backgroundColor:'#631D76'}}  >Enter</Link>
               </li>
               </ol>
 
