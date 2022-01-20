@@ -39,6 +39,11 @@ public class RoomController {
     return ResponseEntity.ok(roomService.getPublicRooms());
   }
 
+  @GetMapping("/private")
+  public ResponseEntity<List<Room>> getPrivate() {
+    return ResponseEntity.ok(roomService.getPrivateRooms());
+  }
+
   @GetMapping("/{roomName}")
   public ResponseEntity<Optional<Room>> getRoom(@PathVariable String roomName) {
     return ResponseEntity.ok(roomService.getRoom(roomName));

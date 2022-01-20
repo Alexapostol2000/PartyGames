@@ -44,6 +44,10 @@ public class RoomService {
     return roomRepository.findAllByRoomType(RoomType.PUBLIC_ROOM.value);
   }
 
+  public List<Room> getPrivateRooms() {
+    return roomRepository.findAllByRoomType(RoomType.PRIVATE_ROOM.value);
+  }
+
   public Optional<Room> getRoom(String roomName) {
     return roomRepository.findByName(roomName);
   }

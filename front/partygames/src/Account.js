@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Button } from "bootstrap";
 import { Navigate } from "react-router";
 
@@ -16,11 +16,16 @@ async function room(credentials,token) {
  }
 
 
+
+
+
 const Account = ({ setToken, token, name }) => {
   const [room_name, setRoomName] = useState();
   const [roomType, setRoomType] = useState();
   
-    
+  const [privateRooms, setPrivateRooms] = useState([]);
+  const [publicRooms, setPublicRooms] = useState([]);
+
   const handleSubmit = async e => {
     e.preventDefault();
         const retBody = await room({
@@ -30,14 +35,47 @@ const Account = ({ setToken, token, name }) => {
         },token);
         
 
-}
+  }
+
+  const getPublicRooms = (token) => {
+    fetch('http://localhost:8080/game/room/public', {
+      method: 'GET',
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => response.json())
+    .then((data) => setPublicRooms(data));
+  }
+
+  const getPrivateRooms = (token) => {
+    fetch('http://localhost:8080/game/room/private', {
+      method: 'GET',
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => response.json())
+    .then((data) => setPrivateRooms(data));
+  }
+  
+  useEffect(() => {
+    getPublicRooms(token);
+    getPrivateRooms(token);
+  }, []);
+  
 
     if(!token) {
         return (
           <Navigate to="/login"/>
         );
     }
-       
+      
+  console.log(publicRooms);
+  console.log(privateRooms);
+  
     return (
       <>
         <div class = "container"  style={{ width: '20rem', maxHeight: '40rem', margin: '5%',
@@ -76,7 +114,35 @@ const Account = ({ setToken, token, name }) => {
                   </form>
               </div>
             </div>
-    </div>
+        </div>
+
+        {publicRooms.map((room) => {
+            console.log(room);
+
+            return (
+              <div class = "container" key={room.id} style={{ width: '20rem', maxHeight: '40rem', margin: '5%',
+                    backgroundColor: '#85BAA1', alignContent:'center', borderRadius:'2rem',  borderColor:'#d3bcc0'}}  >
+                    <div className="card shadow mb-1 mx-auto text-center" />
+                <p>{room.name} {room.maxPlayerNum} {room.gameName}</p>
+              </div>
+
+            );
+        })}
+
+        {privateRooms.map((room) => {
+            console.log(room);
+
+            return (
+              <div class = "container" key={room.id} style={{ width: '20rem', maxHeight: '40rem', margin: '5%',
+                backgroundColor: '#85BAA1', alignContent: 'center', borderRadius: '2rem', borderColor: '#d3bcc0',
+                top: '0rem', left: '0rem'}}  >
+                    <div className="card shadow mb-1 mx-auto text-center" />
+                    <p>{room.name} {room.maxPlayerNum} {room.gameName}</p>
+
+              </div>
+
+            );
+        })} 
     </>
     );}
     export default Account;
