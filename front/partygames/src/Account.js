@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { Button } from "bootstrap";
 import { Navigate } from "react-router";
-
+import {format} from 'react-string-format'
 
 async function room(credentials,token) {
   return fetch('http://localhost:8080/game/room', {
@@ -134,35 +134,66 @@ const Account = ({ setToken, token, name }) => {
         </div>
         </div>
         <div class="col-md-6">
+
+        <div className="card mx-auto" style ={{backgroundColor: '#598392', padding: '15px', width: '35rem', marginTop: '3rem'}}>
+        <h5 class="card-title" style ={{marginBottom:'20px'}}> Public Rooms </h5>
+     
         {publicRooms.map((room) => {
             console.log(room);
 
             return (
-              <div class = "container" key={room.id} style={{ width: '20rem', maxHeight: '40rem', margin: '5%',
-                    backgroundColor: '#85BAA1', alignContent:'center', borderRadius:'2rem',  borderColor:'#d3bcc0'}}  >
-                    <div className="card shadow mb-1 mx-auto text-center" />
-                <p>{room.name} {room.maxPlayerNum} {room.gameName}</p>
-              </div>
+              <ol class="list-group ">
+              <li class="list-group-item d-flex justify-content-between align-items-start" key = {room.id} style ={{ backgroundColor: '#85BAA1'}}>
+                <div class="ms-2 me-auto">
+                <div class="fw-bold" style ={{color: '#598392'}}> {room.name}</div>
+                <b>Players Now:</b> <br></br>
+                  <b>Max Players:</b> {room.maxPlayerNum}<br></br>
+                  <b>Admin:</b> {room.adminName}<br></br>
+                  <b>Game:</b> {room.gameName}<br></br>
+                  <b>Status:</b> 
+                </div>
+                <span ><button style={{ backgroundColor: '#85BAA1', alignContent:'center', borderColor:'#d3bcc0', borderRadius:"2rem"}}> Enter</button></span>
+              </li>
+              </ol>
+              
+
+         
 
             );
         })}
-
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-md-6">
+          </div>
+          <div class="col-md-6">
+        <div className="card mx-auto" style ={{backgroundColor: '#598392', padding: '15px', width: '35rem', marginTop: '3rem'}}>
+        <h5 class="card-title" style ={{marginBottom:'20px'}}> Private Rooms </h5>
         {privateRooms.map((room) => {
             console.log(room);
 
             return (
-              <div class = "container" key={room.id} style={{ width: '20rem', maxHeight: '40rem', margin: '5%',
-                backgroundColor: '#85BAA1', alignContent: 'center', borderRadius: '2rem', borderColor: '#d3bcc0',
-                top: '0rem', left: '0rem'}}  >
-                    <div className="card shadow mb-1 mx-auto text-center" />
-                    <p>{room.name} {room.maxPlayerNum} {room.gameName}</p>
-
-              </div>
+              <ol class="list-group ">
+              <li class="list-group-item d-flex justify-content-between align-items-start" key = {room.id} style ={{ backgroundColor: '#85BAA1'}}>
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold" style ={{color: '#598392'}}> {room.name}</div>
+                  <b>Players Now:</b> <br></br>
+                  <b>Max Players:</b> {room.maxPlayerNum}<br></br>
+                  <b>Admin:</b> {room.adminName}<br></br>
+                  <b>Game:</b> {room.gameName}<br></br>
+                  <b>Status:</b> 
+                </div>
+                <span ><button style={{ backgroundColor: '#85BAA1', alignContent:'center', borderColor:'#d3bcc0', borderRadius:"2rem"}}> Enter</button></span>
+              </li>
+              </ol>
 
             );
         })} 
         </div>
         </div>
+        </div>
+        </div>
+        
     </>
     );}
     export default Account;
