@@ -26,6 +26,8 @@ public class Game {
     }
 
     public Map<String, String> getWordsToGuess() {
+        this.wordsToGuess.put("albina","Se plimba din floare in floare si culege ceva dulce.");
+        this.wordsToGuess.put("masina","Ne deplasam cu ea pe strada.");
         return wordsToGuess;
     }
 

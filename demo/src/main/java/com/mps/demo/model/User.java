@@ -26,5 +26,9 @@ public class User {
 
   private Long totalScore;
 
+  public void addscore(long value){
+    this.totalScore+=value;
+  }
+
 
 }
