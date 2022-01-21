@@ -3,6 +3,7 @@ import { Button } from "bootstrap";
 import { Navigate } from "react-router";
 import {format} from 'react-string-format'
 import { Link } from 'react-router-dom';
+
 async function room(credentials,token) {
   return fetch('http://localhost:8080/game/room', {
     method: 'POST',
@@ -15,9 +16,17 @@ async function room(credentials,token) {
     .then(data => data.json())
  }
 
+//  function handleAddPublic(room) {
+//   const newPublicRoomList = publicRooms.concat({ room });
 
+//   setPublicRooms(newPublicRoomList);
+// }
 
+// function handleAddPrivate(room) {
+//   const newPrivateRoomList = privateRooms.concat({ room });
 
+//   setPrivateRooms(newPrivateRoomList);
+// }
 
 const Account = ({ setToken, token, name }) => {
   const [room_name, setRoomName] = useState();
@@ -25,8 +34,10 @@ const Account = ({ setToken, token, name }) => {
   const [maxPlayers, setMaxPlayers] = useState();
   const [roomPassword, setRoomPassword] = useState("");
   
-  const [privateRooms, setPrivateRooms] = useState([]);
-  const [publicRooms, setPublicRooms] = useState([]);
+  
+ const [privateRooms, setPrivateRooms] = useState([]);
+ const [publicRooms, setPublicRooms] = useState([]);
+  
 
   //const [created, setCreated ] = useState(0);
 
@@ -38,9 +49,11 @@ const Account = ({ setToken, token, name }) => {
          maxPlayerNum: maxPlayers,
          password: roomPassword
 
-        },token);
+        }, token);
       
-      
+        getPublicRooms(token);
+        getPrivateRooms(token);
+        e.target.reset();
         console.log("aaaaaaaaa");
         console.log("room.id" + retBody.id);
   }
@@ -72,7 +85,7 @@ const Account = ({ setToken, token, name }) => {
   useEffect(() => {
     getPublicRooms(token);
     getPrivateRooms(token);
-  }, []);
+  }, [2000]);
   
 
     if(!token) {
