@@ -3,8 +3,10 @@ import { Button } from "bootstrap";
 import { Navigate } from "react-router";
 import {format} from 'react-string-format'
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-async function room(credentials,token) {
+async function room(credentials, token) {
+
   return fetch('http://localhost:8080/game/room', {
     method: 'POST',
     headers: {
@@ -41,6 +43,7 @@ const Account = ({ setToken, token, name }) => {
 
   //const [created, setCreated ] = useState(0);
 
+  
   const handleSubmit = async e => {
     e.preventDefault();
         const retBody = await room({
@@ -56,8 +59,12 @@ const Account = ({ setToken, token, name }) => {
         e.target.reset();
         console.log("aaaaaaaaa");
         console.log("room.id" + retBody.id);
+        
   }
-    
+
+  
+
+
   const getPublicRooms = (token) => {
     fetch('http://localhost:8080/game/room/public', {
       method: 'GET',
@@ -92,13 +99,24 @@ const Account = ({ setToken, token, name }) => {
     getPublicRooms(token);
     getPrivateRooms(token);
   }, [2000]);
+
   
 
-    if(!token) {
-        return (
-          <Navigate to="/login"/>
-        );
-    }
+  // const handleEnterPublic = async e => {
+  //   e.preventDefault();
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: {
+  //       'Authorization':  `${token}`,
+  //       'Content-Type': 'application/json'
+  //     },
+  //   };
+  //   fetch('http://localhost:8080/game/room/public/enter/${room_name}', requestOptions)
+  //     .then(response => response.json())
+  //     .then(res => console.log(res));
+  // };
+  
+
     
   // if (created) {
   //   return (
@@ -169,6 +187,24 @@ const Account = ({ setToken, token, name }) => {
      
         {publicRooms.map((room) => {
             console.log(room);
+
+            async function enterPublic(credentials, token) {
+              const roomName = String(room.name);
+              return fetch(format('http://localhost:8080/game/room/public/enter/{0}', roomName), {
+                method: 'POST',
+                headers: {
+                  'Authorization': token,
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(data => data.json())
+             }
+          
+             const handleEnterPublic = async e => {
+              e.preventDefault();
+              const mesaj = await enterPublic({}, token)
+              
+            }
     
             return (
               <ol class="list-group ">
@@ -181,7 +217,7 @@ const Account = ({ setToken, token, name }) => {
                   <b>Game:</b> {room.gameName}<br></br>
                   <b>Status:</b> 
                 </div>
-                <Link to={format('/room/{0}', room.id)} state={{ "room_id":room.id, name }} className="btn btn-dark" style ={{backgroundColor:'#631D76'}}  >Enter</Link>
+                <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={handleEnterPublic}>Enter</button>
               </li>
               </ol>
               
