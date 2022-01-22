@@ -7,7 +7,10 @@ import com.mps.demo.repository.RoomRepository;
 import com.mps.demo.repository.UserRepository;
 import com.mps.demo.service.jwt.JwtUtils;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -67,8 +70,11 @@ public class GameService {
     }
     Room room = optionalRoom.get();
 
-
-    return ResponseEntity.ok(room.getGame().getWordsToGuess().get("iepuras"));
+    Object[] crunchifyKeys = room.getGame().getWordsToGuess().keySet().toArray();
+    Object key = crunchifyKeys[new Random().nextInt(crunchifyKeys.length)];
+    room.getGame().setChosenword((String) key);
+    roomRepository.save(room);
+    return ResponseEntity.ok(room.getGame().getWordsToGuess().get(key));
   }
 
   public ResponseEntity end(String roomName, String jwt) {
@@ -97,9 +103,17 @@ public class GameService {
     String name = room.getGame().getScore().entrySet().stream()
         .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
     for (Map.Entry<String, Integer> entry : room.getGame().getScore().entrySet()) {
-      userRepository.findByName(entry.getKey()).get().addscore(1000);
+      Optional<User> auxoptionalUser = userRepository.findByName(entry.getKey());
+      if (!auxoptionalUser.isPresent()) {
+        log.debug("The player with username {} is missing", userNameFromJwtToken);
+        return ResponseEntity.badRequest().body("The player with username  " + userNameFromJwtToken + "is missing");
+      }
+      User aux = auxoptionalUser.get();
+      aux.addscore(1000);
     }
     userRepository.findByName(name).get().addscore(2000);
+    userRepository.save(user);
+    roomRepository.save(room);
     return ResponseEntity.ok(user);
   }
 
@@ -121,10 +135,12 @@ public class GameService {
     Room room = optionalRoom.get();
     User user = optionalUser.get();
 
-    if (room.getGame().getWordsToGuess().get("iepuras") == word) {
+    if (Objects.equals(room.getGame().getChosenword(), word.toLowerCase())) {
       room.getGame().getScore().put(user.getName(), room.getGame().getScore().get(user.getName()) + 1000);
+      roomRepository.save(room);
       return ResponseEntity.ok(true);
     }
+    roomRepository.save(room);
     return ResponseEntity.ok(false);
   }
 
