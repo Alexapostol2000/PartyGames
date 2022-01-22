@@ -37,7 +37,7 @@ public class Room {
   @Nullable
   private String gameName;
 
-  private boolean gameStarted;
+//  private boolean gameStarted;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "game_id", referencedColumnName = "id")

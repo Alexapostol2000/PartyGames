@@ -56,7 +56,7 @@ public class GameService {
       return ResponseEntity.badRequest().body("The user" + user.getName() + " is not the admin of the room" + roomName);
     }
 
-    room.setGameStarted(true);
+    //room.setGameStarted(true);
     roomRepository.save(room);
     return ResponseEntity.ok(room);
   }

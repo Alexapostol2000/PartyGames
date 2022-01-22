@@ -67,7 +67,10 @@ const Account = ({ setToken, token, name }) => {
       }
     })
     .then((response) => response.json())
-    .then((data) => setPublicRooms(data));
+      .then((data) => {
+        setPublicRooms(data);
+        console.log(data);
+      });
   }
 
   const getPrivateRooms = (token) => {
@@ -79,7 +82,10 @@ const Account = ({ setToken, token, name }) => {
       }
     })
     .then((response) => response.json())
-    .then((data) => setPrivateRooms(data));
+      .then((data) => {
+        setPrivateRooms(data);
+        console.log(data);
+      });
   }
   
   useEffect(() => {
