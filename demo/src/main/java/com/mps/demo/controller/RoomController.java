@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,14 +40,34 @@ public class RoomController {
     return ResponseEntity.ok(roomService.getPublicRooms());
   }
 
-  @GetMapping("/private")
-  public ResponseEntity<List<Room>> getPrivate() {
-    return ResponseEntity.ok(roomService.getPrivateRooms());
-  }
-
   @GetMapping("/{roomName}")
   public ResponseEntity<Optional<Room>> getRoom(@PathVariable String roomName) {
     return ResponseEntity.ok(roomService.getRoom(roomName));
   }
-  
+
+  @PostMapping("/public/enter/{roomName}")
+  public ResponseEntity enterPublicRoom(@PathVariable String roomName,
+                                        @RequestHeader("Authorization") String jwt) {
+    return roomService.enterPublicRoom(roomName, jwt);
+  }
+
+  @PostMapping("/private/enter/{roomName}/pass/{password}")
+  public ResponseEntity enterPrivateRoom(@PathVariable String roomName,
+                                         @RequestHeader("Authorization") String jwt,
+                                         @PathVariable String password) {
+    return roomService.enterPrivateRoom(roomName, jwt, password);
+  }
+
+  @DeleteMapping("/admin/leave/{roomName}")
+  public ResponseEntity adminLeaveRoom(@PathVariable String roomName,
+                                       @RequestHeader("Authorization") String jwt) {
+    return roomService.adminLeaveRoom(roomName, jwt);
+  }
+
+  @DeleteMapping("/user/leave/{roomName}")
+  public ResponseEntity userLeaveRoom(@PathVariable String roomName,
+                                      @RequestHeader("Authorization") String jwt) {
+    return roomService.userLeaveRoom(roomName, jwt);
+  }
+
 }

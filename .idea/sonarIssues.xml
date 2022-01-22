@@ -18,6 +18,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$MAVEN_REPOSITORY$/org/springframework/spring-web/5.3.14/spring-web-5.3.14.jar!/org/springframework/http/ResponseEntity.class">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$MAVEN_REPOSITORY$/org/springframework/spring-web/5.3.14/spring-web-5.3.14.jar!/org/springframework/web/bind/annotation/CrossOrigin.class">
           <value>
             <set />
@@ -33,12 +38,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/demo/src/main/java/com/mps/demo/controller/GameController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/demo/src/main/java/com/mps/demo/controller/RoomController.java">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/demo/src/main/java/com/mps/demo/controller/UserController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/demo/src/main/java/com/mps/demo/model/Game.java">
           <value>
             <set />
           </value>
@@ -54,6 +69,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/demo/src/main/java/com/mps/demo/model/mapper/UserToUserDTO.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/demo/src/main/java/com/mps/demo/repository/GameRepository.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/demo/src/main/java/com/mps/demo/service/GameService.java">
           <value>
             <set />
           </value>
@@ -94,6 +119,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/demo/target/classes/com/mps/demo/GameApplication.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/demo/target/classes/com/mps/demo/controller/RoomController.class">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/demo/target/classes/com/mps/demo/model/Room.class">
           <value>
             <set />
           </value>
