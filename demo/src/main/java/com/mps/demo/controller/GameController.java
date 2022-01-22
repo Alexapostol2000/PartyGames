@@ -24,14 +24,14 @@ public class GameController {
         return gameService.play(roomName, jwt);
     }
 
-    @PostMapping
-    public ResponseEntity<String> startRound(@RequestBody Room room) {
-        return ResponseEntity.ok(gameService.startRound(room));
+    @PostMapping("/game/play/{roomName}")
+    public ResponseEntity<String> startRound(@PathVariable String roomName) {
+        return gameService.startRound(roomName);
     }
 
-    @PostMapping
-    public ResponseEntity<Optional<User>> end(@RequestBody Room room) {
-        return ResponseEntity.ok(gameService.end(room));
+    @PostMapping("/game/end/{roomName}")
+    public ResponseEntity<Optional<User>> end(@PathVariable String roomName, @RequestHeader("Authorization") String jwt) {
+        return gameService.end(roomName,jwt);
     }
 
     @GetMapping("/score/{roomName}")
@@ -39,8 +39,8 @@ public class GameController {
         return gameService.getScore(roomName);
     }
 
-    @PostMapping
-    public ResponseEntity<Boolean> end(@RequestBody Room room, @RequestParam String word, @RequestHeader("Authorization") String jwt) {
-        return ResponseEntity.ok(gameService.solve(room,jwt,word));
+    @PostMapping("/game/solve/{roomName}/word/{word}")
+    public ResponseEntity<Boolean> end(@PathVariable String roomName, @PathVariable String word, @RequestHeader("Authorization") String jwt) {
+        return gameService.solve(roomName,jwt,word);
     }
 }
