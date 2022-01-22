@@ -4,13 +4,11 @@ import com.mps.demo.model.Game;
 import com.mps.demo.model.Room;
 import com.mps.demo.model.User;
 import com.mps.demo.service.GameService;
-import com.mps.demo.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,28 +19,28 @@ public class GameController {
     @Autowired
     GameService gameService;
 
-    @PostMapping
-    public ResponseEntity<Game> play(@RequestBody Room room, @RequestHeader("Authorization") String jwt) {
-        return ResponseEntity.ok(GameService.play(room, jwt));
+    @PostMapping("/game/start/{roomName}")
+    public ResponseEntity play(@PathVariable String roomName, @RequestHeader("Authorization") String jwt) {
+        return gameService.play(roomName, jwt);
     }
 
     @PostMapping
-    public ResponseEntity<String> StartRound(@RequestBody Room room) {
-        return ResponseEntity.ok(GameService.StartRound(room));
+    public ResponseEntity<String> startRound(@RequestBody Room room) {
+        return ResponseEntity.ok(gameService.startRound(room));
     }
 
     @PostMapping
     public ResponseEntity<Optional<User>> end(@RequestBody Room room) {
-        return ResponseEntity.ok(GameService.end(room));
+        return ResponseEntity.ok(gameService.end(room));
     }
 
-    @GetMapping("/score")
-    public ResponseEntity<Map<String,Integer>> getPublic(@RequestBody Room room) {
-        return ResponseEntity.ok(room.getGame().getScore());
+    @GetMapping("/score/{roomName}")
+    public ResponseEntity getPublic(@PathVariable String roomName) {
+        return gameService.getScore(roomName);
     }
 
     @PostMapping
     public ResponseEntity<Boolean> end(@RequestBody Room room, @RequestParam String word, @RequestHeader("Authorization") String jwt) {
-        return ResponseEntity.ok(GameService.solve(room,jwt,word));
+        return ResponseEntity.ok(gameService.solve(room,jwt,word));
     }
 }
