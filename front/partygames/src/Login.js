@@ -14,9 +14,10 @@ async function login(credentials) {
  }
 
 
-const Login = ({setToken, token, setName}) => {
+const Login = ({setToken, token, setName,setScore}) => {
   const [name, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  
 
   console.log("mhm" + token);
   if(token) {
@@ -34,6 +35,8 @@ const Login = ({setToken, token, setName}) => {
     console.log("inainte de set" + mesaj.jwt);
     setToken(mesaj.jwt);
     setName(mesaj.name);
+    setScore(mesaj.totalScore);
+  
     console.log ("nume" + mesaj.name);
 
 

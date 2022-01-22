@@ -28,7 +28,7 @@ async function room(credentials,token) {
 //   setPrivateRooms(newPrivateRoomList);
 // }
 
-const Account = ({ setToken, token, name }) => {
+const Account = ({ setToken, token, name,score }) => {
   const [room_name, setRoomName] = useState();
   const [roomType, setRoomType] = useState();
   const [maxPlayers, setMaxPlayers] = useState();
@@ -118,7 +118,7 @@ const Account = ({ setToken, token, name }) => {
         <div className="card shadow mb-1 mx-auto text-center" />
                   <h5 class="card-title"> My account </h5>
                   <h6 class="card-subtitle mb-2 text-muted"> Nume player: {name} </h6>
-                  <h6 class="card-subtitle mb-2 text-muted"> Total puncte: </h6>
+                  <h6 class="card-subtitle mb-2 text-muted"> Total puncte: {score} </h6>
                    
               
                   

@@ -10,9 +10,11 @@ import Account from './Account';
 import useToken from './hooks/useToken';
 import useName from './hooks/useName';
 import Logout from './Logout';
+import useScore from './hooks/useScore';
 function App() {
   const { token, setToken } = useToken();
   const { name, setName} = useName();
+  const {score, setScore} = useScore();
 
   return (
     <div className="App">
@@ -20,9 +22,9 @@ function App() {
       <div className="content">
       <Routes>
         <Route exact path="/" element = {<Home />}/>
-        <Route path="/login" element = {<Login setToken={setToken} token={token}  setName={setName}/>}/>
+        <Route path="/login" element = {<Login setToken={setToken} token={token}  setName={setName} setScore={setScore} score={score}/>}/>
         <Route path="/register" element = {<Register/>}/>
-        <Route path="/account" element = {<Account setToken={setToken} token={token}  name={name}/>}/>
+        <Route path="/account" element = {<Account setToken={setToken} token={token}  name={name}  score={score}/>}/>
         <Route path="/logout" element = {<Logout setToken={setToken} token={token}/>}/>
 
       </Routes>
