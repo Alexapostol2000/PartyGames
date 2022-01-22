@@ -57,7 +57,7 @@ const Account = ({ setToken, token, name }) => {
         console.log("aaaaaaaaa");
         console.log("room.id" + retBody.id);
   }
-
+    
   const getPublicRooms = (token) => {
     fetch('http://localhost:8080/game/room/public', {
       method: 'GET',
