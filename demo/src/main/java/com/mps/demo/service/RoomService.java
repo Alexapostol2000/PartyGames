@@ -1,8 +1,10 @@
 package com.mps.demo.service;
 
+import com.mps.demo.model.Game;
 import com.mps.demo.model.Room;
 import com.mps.demo.model.RoomType;
 import com.mps.demo.model.User;
+import com.mps.demo.repository.GameRepository;
 import com.mps.demo.repository.RoomRepository;
 import com.mps.demo.repository.UserRepository;
 import com.mps.demo.service.jwt.JwtUtils;
@@ -25,11 +27,19 @@ public class RoomService {
   UserRepository userRepository;
 
   @Autowired
+  GameRepository gameRepository;
+
+  @Autowired
   JwtUtils jwtUtils;
 
   public Room create(Room room, String jwt) {
     room.setAdminName(jwtUtils.getUserNameFromJwtToken(jwt));
-    return roomRepository.save(room);
+    Room r = roomRepository.save(room);
+    Game game = new Game();
+    game.setId(r.getId());
+    gameRepository.save(game);
+    r.setGame(game);
+    return roomRepository.save(r);
   }
 
   public Optional<Room> update(Room roomRequest, String jwt) {
@@ -50,9 +60,6 @@ public class RoomService {
   public List<Room> getPublicRooms() {
     return roomRepository.findAllByRoomType(RoomType.PUBLIC_ROOM.value);/*.stream().filter(room -> !room.isGameStarted())
         .collect(Collectors.toList());*/
-  }
-  public List<Room> getPrivateRooms() {
-    return roomRepository.findAllByRoomType(RoomType.PRIVATE_ROOM.value);
   }
 
   public Optional<Room> getRoom(String roomName) {
@@ -172,5 +179,10 @@ public class RoomService {
     room.setMaxPlayerNum(room.getMaxPlayerNum() + 1);
     roomRepository.save(room);
     return ResponseEntity.ok(room);
+  }
+
+  public List<Room> getPrivateRooms() {
+    return roomRepository.findAllByRoomType(RoomType.PRIVATE_ROOM.value).stream().filter(room -> !room.isGameStarted())
+        .collect(Collectors.toList());
   }
 }

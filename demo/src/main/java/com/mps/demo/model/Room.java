@@ -32,14 +32,15 @@ public class Room {
 
   private String password;
 
-  private Integer maxPlayerNum;
+  private Integer maxPlayerNum = 0;
 
   @Nullable
   private String gameName;
 
-//  private boolean gameStarted;
+  @Nullable
+  private boolean gameStarted;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.MERGE)
   @JoinColumn(name = "game_id", referencedColumnName = "id")
   private Game game;
 

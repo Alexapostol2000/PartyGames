@@ -10,13 +10,14 @@ import java.util.*;
 public class Game {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Transient
     private Map<String, String> wordsToGuess = new HashMap<>();
     @Transient
     private Map<String, Integer> score = new HashMap<>();
 
-    private  String chosenword;
+    private String chosenWord;
 
     public Map<String, String> getWordsToGuess() {
         this.wordsToGuess.put("albina","Se plimba din floare in floare si culege ceva dulce.");

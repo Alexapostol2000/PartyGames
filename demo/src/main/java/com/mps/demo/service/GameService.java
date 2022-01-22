@@ -1,5 +1,6 @@
 package com.mps.demo.service;
 
+import com.mps.demo.model.Game;
 import com.mps.demo.model.Room;
 import com.mps.demo.model.User;
 import com.mps.demo.repository.GameRepository;
@@ -70,11 +71,12 @@ public class GameService {
     }
     Room room = optionalRoom.get();
 
-    Object[] crunchifyKeys = room.getGame().getWordsToGuess().keySet().toArray();
+    Game game = room.getGame();
+    Object[] crunchifyKeys = game.getWordsToGuess().keySet().toArray();
     Object key = crunchifyKeys[new Random().nextInt(crunchifyKeys.length)];
-    room.getGame().setChosenword((String) key);
-    roomRepository.save(room);
-    return ResponseEntity.ok(room.getGame().getWordsToGuess().get(key));
+    game.setChosenWord((String) key);
+    gameRepository.save(game);
+    return ResponseEntity.ok(game.getWordsToGuess().get(key));
   }
 
   public ResponseEntity end(String roomName, String jwt) {
@@ -135,7 +137,7 @@ public class GameService {
     Room room = optionalRoom.get();
     User user = optionalUser.get();
 
-    if (Objects.equals(room.getGame().getChosenword(), word.toLowerCase())) {
+    if (Objects.equals(room.getGame().getChosenWord(), word.toLowerCase())) {
       room.getGame().getScore().put(user.getName(), room.getGame().getScore().get(user.getName()) + 1000);
       roomRepository.save(room);
       return ResponseEntity.ok(true);
