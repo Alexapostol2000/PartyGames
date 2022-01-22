@@ -16,9 +16,13 @@ public class Game {
     @Transient
     private Map<String, Integer> score = new HashMap<>();
 
+    private  String chosenword;
+
     public Map<String, String> getWordsToGuess() {
         this.wordsToGuess.put("albina","Se plimba din floare in floare si culege ceva dulce.");
         this.wordsToGuess.put("masina","Ne deplasam cu ea pe strada.");
+        this.wordsToGuess.put("casa","loc unde sa locuiesti");
+        this.wordsToGuess.put("veverita","se catara in copaci si mananca nuci");
         return wordsToGuess;
     }
 
