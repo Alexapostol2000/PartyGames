@@ -35,10 +35,9 @@ const Account = ({ setToken, token, name }) => {
   const [roomType, setRoomType] = useState();
   const [maxPlayers, setMaxPlayers] = useState();
   const [roomPassword, setRoomPassword] = useState("");
-  const [isData, setIsData] = useState(false)
   const [dataRoom, setDataRoom] = useState(null);
+  const [dataRoom1, setDataRoom1] = useState(null);
 
-  const [response, setResponse] = useState(0)
  const [privateRooms, setPrivateRooms] = useState([]);
  const [publicRooms, setPublicRooms] = useState([]);
   
@@ -134,7 +133,13 @@ const Account = ({ setToken, token, name }) => {
   
   if(dataRoom != null){
     return <Room data={dataRoom}/>
+  } 
+  if(dataRoom1 != null){
+    console.log ("aici" + dataRoom1)
+    return <Room data={dataRoom1}/>
   }
+
+ 
 
     return (
       <>
@@ -207,16 +212,16 @@ const Account = ({ setToken, token, name }) => {
                 },
               })
              
-              .then(data => {
-                setDataRoom(data.json());
-              })
+              .then(data => 
+                data.json());
+              
               
             }
              
             const handleEnterPublic = async e => {
               
               const mesaj = await enterPublic({}, token)
-              
+              setDataRoom(mesaj)
               
               
             }
@@ -272,8 +277,10 @@ const Account = ({ setToken, token, name }) => {
              }
           
              const handleEnterPrivate = async e => {
-              e.preventDefault();
-              const mesaj = await enterPrivate({roomPass}, token)
+              const mesaj1 = await enterPrivate({
+             
+              }, token)
+              setDataRoom1(mesaj1)
               
             }
 
@@ -297,7 +304,7 @@ const Account = ({ setToken, token, name }) => {
                 <input type="text" onChange={e => setRoomPass(e.target.value)}/>
                 </label>
                 <button type="submit" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
-                  console.log("plm din buton")
+                  console.log("plm din butonb priv")
                   handleEnterPrivate()}}>Enter</button>
                 </form>
                 </div>
