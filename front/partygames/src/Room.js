@@ -122,7 +122,7 @@ const Room = ({ setToken, token, adminToken, data }) => {
                   
                   handleStart()
                   console.log(dataGame)}}>Create Game</button>
-        <Link to="/game" state={{ from: dataGame }} className="btn btn-dark" type="button" >Go to game!</Link>
+        <Link to="/game" state={{ from: dataRoom }} className="btn btn-dark" type="button" >Go to game!</Link>
         </div>                             
         </div>
         </>
