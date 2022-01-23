@@ -39,6 +39,11 @@ public class GameController {
         return gameService.getScore(roomName);
     }
 
+    @GetMapping("/descriptionword/{roomName}")
+    public ResponseEntity getDescription(@PathVariable String roomName) {
+        return gameService.getDescription(roomName);
+    }
+
     @PostMapping("/solve/{roomName}/word/{word}")
     public ResponseEntity<Boolean> solve(@PathVariable String roomName, @PathVariable String word, @RequestHeader("Authorization") String jwt) {
         return gameService.solve(roomName,jwt,word);

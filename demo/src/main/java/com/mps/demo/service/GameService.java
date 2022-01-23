@@ -178,4 +178,15 @@ public class GameService {
     Room room = optionalRoom.get();
     return ResponseEntity.ok(room.getGame().getScore());
   }
+
+  public ResponseEntity getDescription(String roomName) {
+    Optional<Room> optionalRoom = roomRepository.findByName(roomName);
+
+    if (!optionalRoom.isPresent()) {
+      log.debug("The room with {} is missing", roomName);
+      return ResponseEntity.badRequest().body("The room with " + roomName + "is missing");
+    }
+    Room room = optionalRoom.get();
+    return ResponseEntity.ok(room.getGame().getWordsToGuess().get(room.getGame().getChosenWord()));
+  }
 }
