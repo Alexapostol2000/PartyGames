@@ -19,6 +19,7 @@ const Room = ({ setToken, token, data }) => {
     // to do: change into room name     
 
     console.log(data)
+  
     return (
         <>
         <div class="row">
@@ -26,8 +27,9 @@ const Room = ({ setToken, token, data }) => {
         <div class = "container"  style={{ width: '20rem', maxHeight: 'rem', margin: '5%',
         backgroundColor: '#85BAA1', alignContent:'center', borderRadius:'2rem',  borderColor:'#d3bcc0'}}  >
         <div className="card shadow mb-1 mx-auto text-center" />
-                  <h5 class="card-title"> Nume camera </h5>
-                  <h6 class="card-subtitle mb-2 text-muted"> Lista utilizatori  </h6>
+                  <h5 class="card-title"> Nume camera: {data.name} </h5>
+                  <h6 class="card-subtitle mb-2 text-muted"> Lista utilizatori: 
+                  <li> </li> </h6>
                  
                    
               
