@@ -3,7 +3,7 @@ import { Button } from "bootstrap";
 import { Navigate } from "react-router";
 import {format} from 'react-string-format'
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import Room from './Room'
 
 async function room(credentials, token) {
 
@@ -35,8 +35,10 @@ const Account = ({ setToken, token, name }) => {
   const [roomType, setRoomType] = useState();
   const [maxPlayers, setMaxPlayers] = useState();
   const [roomPassword, setRoomPassword] = useState("");
-  
-  
+  const [isData, setIsData] = useState(false)
+  const [dataRoom, setDataRoom] = useState(null);
+
+  const [response, setResponse] = useState(0)
  const [privateRooms, setPrivateRooms] = useState([]);
  const [publicRooms, setPublicRooms] = useState([]);
   
@@ -45,6 +47,7 @@ const Account = ({ setToken, token, name }) => {
 
   //const [created, setCreated ] = useState(0);
 
+  
   
   const handleSubmit = async e => {
     e.preventDefault();
@@ -129,6 +132,10 @@ const Account = ({ setToken, token, name }) => {
   console.log(publicRooms);
   console.log(privateRooms);
   
+  if(dataRoom != null){
+    return <Room data={dataRoom}/>
+  }
+
     return (
       <>
       <div class="row">
@@ -199,16 +206,15 @@ const Account = ({ setToken, token, name }) => {
                   'Content-Type': 'application/json'
                 },
               })
-              .then(response => {
-                console.log(response.status);
-                if (response.status === 200) return (
-                <Navigate to="/room"/>
-              );})
-                .then(data => data.json())
+             
+              .then(data => {
+                setDataRoom(data.json());
+              })
+              
             }
              
             const handleEnterPublic = async e => {
-              e.preventDefault();
+              
               const mesaj = await enterPublic({}, token)
               
               
@@ -226,7 +232,10 @@ const Account = ({ setToken, token, name }) => {
                   <b>Game:</b> {room.gameName}<br></br>
                   <b>Status:</b> 
                 </div>
-                <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={handleEnterPublic}>Enter</button>
+                <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
+                  
+                  handleEnterPublic()
+                  console.log("plm din piblc")}}>Enter</button>
               </li>
               </ol>
               
@@ -257,6 +266,7 @@ const Account = ({ setToken, token, name }) => {
                   'Authorization': token,
                   'Content-Type': 'application/json'
                 },
+                
               })
                 .then(data => data.json())
              }
@@ -286,7 +296,9 @@ const Account = ({ setToken, token, name }) => {
                 Room Pass:
                 <input type="text" onChange={e => setRoomPass(e.target.value)}/>
                 </label>
-                <button type="submit" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={handleEnterPrivate}>Enter</button>
+                <button type="submit" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
+                  console.log("plm din buton")
+                  handleEnterPrivate()}}>Enter</button>
                 </form>
                 </div>
               </li>
