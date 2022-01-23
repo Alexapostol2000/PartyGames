@@ -6,8 +6,10 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 
+
 const Room = ({ setToken, token, adminToken, data }) => {
   const [dataRoom, setDataRoom] = useState(data);
+  const [dataGame, setDataGame] = useState(data);
   
   // info camera
   // done: lista players
@@ -18,7 +20,8 @@ const Room = ({ setToken, token, adminToken, data }) => {
     console.log(data)
     console.log(dataRoom.players)
     const roomPlayers = dataRoom.players;
-    console.log(roomPlayers)
+    const games = dataRoom.game;
+    console.log(games)
     
 
     async function deletePlayer(credentials, token) {
@@ -58,6 +61,34 @@ const Room = ({ setToken, token, adminToken, data }) => {
       setDataRoom(mesaj)  
     }
 
+    async function startGame(credentials, token) {
+    
+      const roomName = String(data.name);
+      if (adminToken === token) {
+        console.log("sunt admin")
+        return fetch(format('http://localhost:8080/game/start/{0}', roomName), {
+        method: 'POST',
+        headers: {
+          'Authorization': token,
+          'Content-Type': 'application/json'
+        },
+          })
+     
+          .then(data => 
+          data.json());
+      } 
+      
+      
+      
+    }
+     
+    const handleStart = async e => {
+      
+      const mesaj = await startGame({}, token)
+      setDataGame(mesaj)  
+    }
+
+
     
 
     return (
@@ -87,6 +118,11 @@ const Room = ({ setToken, token, adminToken, data }) => {
                   console.log("leave room")}}>Leave Room</button>
 
         </div>
+        <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
+                  
+                  handleStart()
+                  console.log(dataGame)}}>Create Game</button>
+        <Link to="/game" state={{ from: dataGame }} className="btn btn-dark" type="button" >Go to game!</Link>
         </div>                             
         </div>
         </>

@@ -30,7 +30,7 @@ async function room(credentials, token) {
 //   setPrivateRooms(newPrivateRoomList);
 // }
 
-const Account = ({ setToken, token, name }) => {
+const Account = ({ setToken, setAdminToken, token, name }) => {
   const [room_name, setRoomName] = useState();
   const [roomType, setRoomType] = useState();
   const [maxPlayers, setMaxPlayers] = useState();
@@ -40,8 +40,8 @@ const Account = ({ setToken, token, name }) => {
 
  const [privateRooms, setPrivateRooms] = useState([]);
  const [publicRooms, setPublicRooms] = useState([]);
- const [adminToken, setAdminToken] = useState();
-  
+ const [adminToken, setAdminTok] = useState();
+ 
 
  const [roomPass, setRoomPass] = useState("");
 
@@ -61,6 +61,7 @@ const Account = ({ setToken, token, name }) => {
         
         getPublicRooms(token);
         getPrivateRooms(token);
+        setAdminTok(token);
         setAdminToken(token);
         e.target.reset();
         console.log("aaaaaaaaa");
@@ -234,10 +235,10 @@ const Account = ({ setToken, token, name }) => {
               <li class="list-group-item d-flex justify-content-between align-items-start" key = {room.id} style ={{ backgroundColor: '#85BAA1'}}>
                 <div class="ms-2 me-auto">
                 <div class="fw-bold" style ={{color: '#598392'}}> {room.name}</div>
-                <b>Players Now:</b> {room.maxPlayers} <br></br>
+                <b>Players Now:</b> {room.currentPlayerNum} <br></br>
                   <b>Max Players:</b> {room.maxPlayerNum}<br></br>
                   <b>Admin:</b> {room.adminName}<br></br>
-                  <b>Game:</b> {room.gameName}<br></br>
+                  <b>Game:</b> GuessMe<br></br>
                   <b>Status:</b> 
                 </div>
                 <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
@@ -293,10 +294,10 @@ const Account = ({ setToken, token, name }) => {
               <li class="list-group-item d-flex justify-content-between align-items-start" key = {room.id} style ={{ backgroundColor: '#85BAA1'}}>
                 <div class="ms-2 me-auto">
                   <div class="fw-bold" style ={{color: '#598392'}}> {room.name}</div>
-                  <b>Players Now:</b> <br></br>
+                  <b>Players Now:</b> {room.currentPlayerNum}<br></br>
                   <b>Max Players:</b> {room.maxPlayerNum}<br></br>
                   <b>Admin:</b> {room.adminName}<br></br>
-                  <b>Game:</b> {room.gameName}<br></br>
+                  <b>Game:</b> GuessMe<br></br>
                   <b>Status:</b> 
                 </div>
 
