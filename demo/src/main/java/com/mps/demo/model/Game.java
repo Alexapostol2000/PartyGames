@@ -14,8 +14,10 @@ public class Game {
     private Long id;
     @Transient
     private Map<String, String> wordsToGuess = new HashMap<>();
-    @Transient
-    private Map<String, Integer> score = new HashMap<>();
+
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinTable(name = "game_score", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "score_id"))
+    private List<ScoreMap> score;
 
     private String chosenWord;
 

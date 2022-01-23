@@ -32,7 +32,9 @@ public class Room {
 
   private String password;
 
-  private Integer maxPlayerNum = 0;
+  private Integer currentPlayerNum = 0;
+
+  private Integer maxPlayerNum;
 
   @Nullable
   private String gameName;
