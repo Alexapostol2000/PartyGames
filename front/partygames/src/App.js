@@ -10,6 +10,8 @@ import Account from './Account';
 import useToken from './hooks/useToken';
 import useName from './hooks/useName';
 import Logout from './Logout';
+import Room from './Room';
+
 function App() {
   const { token, setToken } = useToken();
   const { name, setName} = useName();
@@ -24,6 +26,7 @@ function App() {
         <Route path="/register" element = {<Register/>}/>
         <Route path="/account" element = {<Account setToken={setToken} token={token}  name={name}/>}/>
         <Route path="/logout" element = {<Logout setToken={setToken} token={token}/>}/>
+        <Route path="/room" element = {<Room setToken={setToken} token={token}/>}/>
 
       </Routes>
       </div>

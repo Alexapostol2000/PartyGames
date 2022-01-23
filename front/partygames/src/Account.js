@@ -41,6 +41,8 @@ const Account = ({ setToken, token, name }) => {
  const [publicRooms, setPublicRooms] = useState([]);
   
 
+ const [roomPass, setRoomPass] = useState("");
+
   //const [created, setCreated ] = useState(0);
 
   
@@ -197,12 +199,19 @@ const Account = ({ setToken, token, name }) => {
                   'Content-Type': 'application/json'
                 },
               })
+              .then(response => {
+                console.log(response.status);
+                if (response.status === 200) return (
+                <Navigate to="/room"/>
+              );})
                 .then(data => data.json())
-             }
-          
-             const handleEnterPublic = async e => {
+            }
+             
+            const handleEnterPublic = async e => {
               e.preventDefault();
               const mesaj = await enterPublic({}, token)
+              
+              
               
             }
     
@@ -211,7 +220,7 @@ const Account = ({ setToken, token, name }) => {
               <li class="list-group-item d-flex justify-content-between align-items-start" key = {room.id} style ={{ backgroundColor: '#85BAA1'}}>
                 <div class="ms-2 me-auto">
                 <div class="fw-bold" style ={{color: '#598392'}}> {room.name}</div>
-                <b>Players Now:</b> <br></br>
+                <b>Players Now:</b> {room.maxPlayers} <br></br>
                   <b>Max Players:</b> {room.maxPlayerNum}<br></br>
                   <b>Admin:</b> {room.adminName}<br></br>
                   <b>Game:</b> {room.gameName}<br></br>
@@ -236,8 +245,30 @@ const Account = ({ setToken, token, name }) => {
         <h5 class="card-title" style ={{marginBottom:'20px'}}> Private Rooms </h5>
         {privateRooms.map((room) => {
             console.log(room);
+            
+
+            async function enterPrivate(credentials, token) {
+              const roomName = String(room.name);
+              const roomPassAux = String(room.password);
+              console.log(roomPassAux);
+              return fetch(format('http://localhost:8080/game/room/private/enter/{0}/pass/{1}', roomName, roomPassAux), {
+                method: 'POST',
+                headers: {
+                  'Authorization': token,
+                  'Content-Type': 'application/json'
+                },
+              })
+                .then(data => data.json())
+             }
+          
+             const handleEnterPrivate = async e => {
+              e.preventDefault();
+              const mesaj = await enterPrivate({roomPass}, token)
+              
+            }
 
             return (
+              <>
               <ol class="list-group ">
               <li class="list-group-item d-flex justify-content-between align-items-start" key = {room.id} style ={{ backgroundColor: '#85BAA1'}}>
                 <div class="ms-2 me-auto">
@@ -248,10 +279,19 @@ const Account = ({ setToken, token, name }) => {
                   <b>Game:</b> {room.gameName}<br></br>
                   <b>Status:</b> 
                 </div>
-                <Link to={format('/room/{0}', room.id)} state={{ "room_id":room.id, name }} className="btn btn-dark" style ={{backgroundColor:'#631D76'}}  >Enter</Link>
+
+                <div>
+                <form >
+                <label>
+                Room Pass:
+                <input type="text" onChange={e => setRoomPass(e.target.value)}/>
+                </label>
+                <button type="submit" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={handleEnterPrivate}>Enter</button>
+                </form>
+                </div>
               </li>
               </ol>
-
+              </>
             );
         })} 
         </div>
