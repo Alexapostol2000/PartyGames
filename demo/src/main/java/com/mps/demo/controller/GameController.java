@@ -40,7 +40,7 @@ public class GameController {
     }
 
     @PostMapping("/solve/{roomName}/word/{word}")
-    public ResponseEntity<Boolean> end(@PathVariable String roomName, @PathVariable String word, @RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<Boolean> solve(@PathVariable String roomName, @PathVariable String word, @RequestHeader("Authorization") String jwt) {
         return gameService.solve(roomName,jwt,word);
     }
 }

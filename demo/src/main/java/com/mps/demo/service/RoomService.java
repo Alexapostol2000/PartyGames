@@ -3,12 +3,15 @@ package com.mps.demo.service;
 import com.mps.demo.model.Game;
 import com.mps.demo.model.Room;
 import com.mps.demo.model.RoomType;
+import com.mps.demo.model.ScoreMap;
 import com.mps.demo.model.User;
 import com.mps.demo.repository.GameRepository;
 import com.mps.demo.repository.RoomRepository;
+import com.mps.demo.repository.ScoreMapRepository;
 import com.mps.demo.repository.UserRepository;
 import com.mps.demo.service.jwt.JwtUtils;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +33,15 @@ public class RoomService {
   GameRepository gameRepository;
 
   @Autowired
+  ScoreMapRepository scoreMapRepository;
+
+  @Autowired
   JwtUtils jwtUtils;
 
   public Room create(Room room, String jwt) {
     room.setAdminName(jwtUtils.getUserNameFromJwtToken(jwt));
+    room.setGameStarted(false);
+    room.setCurrentPlayerNum(0);
     Room r = roomRepository.save(room);
     Game game = new Game();
     game.setId(r.getId());
@@ -58,8 +66,8 @@ public class RoomService {
   }
 
   public List<Room> getPublicRooms() {
-    return roomRepository.findAllByRoomType(RoomType.PUBLIC_ROOM.value);/*.stream().filter(room -> !room.isGameStarted())
-        .collect(Collectors.toList());*/
+    return roomRepository.findAllByRoomType(RoomType.PUBLIC_ROOM.value).stream().filter(room -> !room.isGameStarted())
+        .collect(Collectors.toList());
   }
 
   public Optional<Room> getRoom(String roomName) {
@@ -69,9 +77,8 @@ public class RoomService {
   public ResponseEntity enterPublicRoom(String roomName, String jwt) {
     Optional<Room> optionalRoom = roomRepository.findByName(roomName);
 
-    if (!optionalRoom.isPresent()) {
-      log.debug("The room with {} is missing", roomName);
-      return ResponseEntity.badRequest().body("The room with " + roomName + "is missing");
+    if (roomExists(roomName, optionalRoom)) {
+      return ResponseEntity.badRequest().body("The room with " + roomName + " is missing");
     }
 
     String userNameFromJwtToken = jwtUtils.getUserNameFromJwtToken(jwt);
@@ -84,11 +91,23 @@ public class RoomService {
     Room room = optionalRoom.get();
     User user = optionalUser.get();
 
+    if (Objects.equals(room.getMaxPlayerNum(), room.getCurrentPlayerNum())) {
+      log.debug("The room has reached max capacity " + room.getMaxPlayerNum());
+      return ResponseEntity.badRequest().body("The room has reached max capacity " + room.getMaxPlayerNum());
+
+    }
     room.getPlayers().add(user);
-    room.setMaxPlayerNum(room.getMaxPlayerNum() - 1);
-    room.getGame().getScore().put(userNameFromJwtToken, 0);
-    roomRepository.save(room);
+    setCurrentPlayerNum(room);
+    createNewScoreEntry(room,userNameFromJwtToken);
     return ResponseEntity.ok(room);
+  }
+
+  private boolean roomExists(String roomName, Optional<Room> optionalRoom) {
+    if (!optionalRoom.isPresent()) {
+      log.debug("The room with {} is missing", roomName);
+      return true;
+    }
+    return false;
   }
 
   public ResponseEntity enterPrivateRoom(String roomName, String jwt, String password) {
@@ -112,13 +131,37 @@ public class RoomService {
       return ResponseEntity.badRequest().body("The player with username  " + userNameFromJwtToken + "is missing");
     }
 
+    if (room.getMaxPlayerNum().equals(room.getCurrentPlayerNum())) {
+      log.debug("The room has reached max capacity " + room.getMaxPlayerNum());
+      return ResponseEntity.badRequest().body("The room has reached max capacity " + room.getMaxPlayerNum());
+
+    }
+
     User user = optionalUser.get();
 
     room.getPlayers().add(user);
-    room.setMaxPlayerNum(room.getMaxPlayerNum() - 1);
-    room.getGame().getScore().put(userNameFromJwtToken, 0);
-    roomRepository.save(room);
+    setCurrentPlayerNum(room);
+
+    createNewScoreEntry(room, userNameFromJwtToken);
+
     return ResponseEntity.ok(room);
+  }
+
+  private void createNewScoreEntry(Room room, String userNameFromJwtToken) {
+    Game game = room.getGame();
+    ScoreMap newScoreEntry = new ScoreMap();
+    newScoreEntry.setUserName(userNameFromJwtToken);
+    newScoreEntry.setScore(0);
+    newScoreEntry.setGameId(game.getId());
+    scoreMapRepository.save(newScoreEntry);
+    game.getScore().add(newScoreEntry);
+    gameRepository.save(game);
+    roomRepository.save(room);
+  }
+
+  private void setCurrentPlayerNum(Room room) {
+    Integer size = room.getPlayers().size();
+    room.setCurrentPlayerNum(size);
   }
 
   public ResponseEntity adminLeaveRoom(String roomName, String jwt) {
@@ -151,7 +194,7 @@ public class RoomService {
       room.setAdminName(otherPlayer.getName());
     }
 
-    room.setMaxPlayerNum(room.getMaxPlayerNum() + 1);
+    setCurrentPlayerNum(room);
     roomRepository.save(room);
     return ResponseEntity.ok(room);
   }
@@ -176,7 +219,7 @@ public class RoomService {
 
     List<User> players = room.getPlayers();
     players.remove(user);
-    room.setMaxPlayerNum(room.getMaxPlayerNum() + 1);
+    setCurrentPlayerNum(room);
     roomRepository.save(room);
     return ResponseEntity.ok(room);
   }

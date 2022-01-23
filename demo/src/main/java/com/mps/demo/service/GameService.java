@@ -2,21 +2,21 @@ package com.mps.demo.service;
 
 import com.mps.demo.model.Game;
 import com.mps.demo.model.Room;
+import com.mps.demo.model.ScoreMap;
 import com.mps.demo.model.User;
 import com.mps.demo.repository.GameRepository;
 import com.mps.demo.repository.RoomRepository;
+import com.mps.demo.repository.ScoreMapRepository;
 import com.mps.demo.repository.UserRepository;
 import com.mps.demo.service.jwt.JwtUtils;
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Slf4j
 @Service
@@ -30,6 +30,9 @@ public class GameService {
 
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  ScoreMapRepository scoreMapRepository;
 
   @Autowired
   JwtUtils jwtUtils;
@@ -57,7 +60,7 @@ public class GameService {
       return ResponseEntity.badRequest().body("The user" + user.getName() + " is not the admin of the room" + roomName);
     }
 
-    //room.setGameStarted(true);
+    room.setGameStarted(true);
     roomRepository.save(room);
     return ResponseEntity.ok(room);
   }
@@ -70,7 +73,6 @@ public class GameService {
       return ResponseEntity.badRequest().body("The room with " + roomName + "is missing");
     }
     Room room = optionalRoom.get();
-
     Game game = room.getGame();
     Object[] crunchifyKeys = game.getWordsToGuess().keySet().toArray();
     Object key = crunchifyKeys[new Random().nextInt(crunchifyKeys.length)];
@@ -102,21 +104,38 @@ public class GameService {
       return ResponseEntity.badRequest().body("The user" + user.getName() + " is not the admin of the room" + roomName);
     }
 
-    String name = room.getGame().getScore().entrySet().stream()
-        .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
-    for (Map.Entry<String, Integer> entry : room.getGame().getScore().entrySet()) {
-      Optional<User> auxoptionalUser = userRepository.findByName(entry.getKey());
-      if (!auxoptionalUser.isPresent()) {
-        log.debug("The player with username {} is missing", userNameFromJwtToken);
-        return ResponseEntity.badRequest().body("The player with username  " + userNameFromJwtToken + "is missing");
-      }
-      User aux = auxoptionalUser.get();
-      aux.addscore(1000);
+    giveBonusToBiggestScoreFromGame(room);
+
+    ResponseEntity<String> userNameFromJwtToken1 = calculateFinalScoreUsers(userNameFromJwtToken, room);
+    if (userNameFromJwtToken1 != null) {
+      return userNameFromJwtToken1;
     }
-    userRepository.findByName(name).get().addscore(2000);
+
     userRepository.save(user);
     roomRepository.save(room);
     return ResponseEntity.ok(user);
+  }
+
+  private void giveBonusToBiggestScoreFromGame(Room room) {
+    List<ScoreMap> scoreOrdered = scoreMapRepository.getScoreMapByGameIdOrderByScoreDesc(room.getGame().getId());
+    ScoreMap biggestScore = scoreOrdered.get(0);
+    biggestScore.setScore(biggestScore.getScore() + 3000);
+    scoreMapRepository.save(biggestScore);
+  }
+
+  private ResponseEntity<String> calculateFinalScoreUsers(String userNameFromJwtToken, Room room) {
+    List<ScoreMap> scores = scoreMapRepository.getScoreMapByGameIdOrderByScoreDesc(room.getGame().getId()) ;
+    for (ScoreMap s : scores) {
+      Optional<User> eachUser = userRepository.findByName(s.getUserName());
+      if (!eachUser.isPresent()) {
+        log.debug("The player with username {} is missing", userNameFromJwtToken);
+        return ResponseEntity.badRequest().body("The player with username  " + userNameFromJwtToken + "is missing");
+      }
+      User aux = eachUser.get();
+      aux.addscore(s.getScore());
+      userRepository.save(aux);
+    }
+    return null;
   }
 
   public ResponseEntity solve(String roomName, String jwt, String word) {
@@ -137,9 +156,11 @@ public class GameService {
     Room room = optionalRoom.get();
     User user = optionalUser.get();
 
-    if (Objects.equals(room.getGame().getChosenWord(), word.toLowerCase())) {
-      room.getGame().getScore().put(user.getName(), room.getGame().getScore().get(user.getName()) + 1000);
-      roomRepository.save(room);
+    Game game = room.getGame();
+    if (Objects.equals(game.getChosenWord(), word.toLowerCase())) {
+      ScoreMap scoreMap = scoreMapRepository.getScoreMapByGameIdAndUserName(game.getId(), user.getName());
+      scoreMap.setScore(scoreMap.getScore() + 1000);
+      scoreMapRepository.save(scoreMap);
       return ResponseEntity.ok(true);
     }
     roomRepository.save(room);

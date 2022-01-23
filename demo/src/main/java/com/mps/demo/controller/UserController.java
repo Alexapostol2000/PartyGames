@@ -10,27 +10,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
   @Autowired
   private UserService userService;
 
-  @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping("/register")
   public ResponseEntity<User> register(@RequestBody User user) {
     User registeredUser = userService.processRegister(user);
     return ResponseEntity.ok(registeredUser);
   }
 
-  @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping("/login")
   public ResponseEntity<Optional<UserDTO>> login(@RequestBody LoginUser loginUser) {
     return ResponseEntity.ok(userService.processLogin(loginUser));
+  }
+
+  @GetMapping("/score/user")
+  public ResponseEntity getScore(@RequestHeader("Authorization") String jwt) {
+    return userService.getScore(jwt);
   }
 
 }
