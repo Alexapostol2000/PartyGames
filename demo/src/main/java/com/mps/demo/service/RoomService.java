@@ -66,8 +66,7 @@ public class RoomService {
   }
 
   public List<Room> getPublicRooms() {
-    return roomRepository.findAllByRoomType(RoomType.PUBLIC_ROOM.value).stream().filter(room -> !room.isGameStarted())
-        .collect(Collectors.toList());
+    return roomRepository.findAllByRoomType(RoomType.PUBLIC_ROOM.value);
   }
 
   public Optional<Room> getRoom(String roomName) {
@@ -225,7 +224,6 @@ public class RoomService {
   }
 
   public List<Room> getPrivateRooms() {
-    return roomRepository.findAllByRoomType(RoomType.PRIVATE_ROOM.value).stream().filter(room -> !room.isGameStarted())
-        .collect(Collectors.toList());
+    return roomRepository.findAllByRoomType(RoomType.PRIVATE_ROOM.value);
   }
 }
