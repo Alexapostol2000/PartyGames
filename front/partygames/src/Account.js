@@ -40,6 +40,7 @@ const Account = ({ setToken, token, name }) => {
 
  const [privateRooms, setPrivateRooms] = useState([]);
  const [publicRooms, setPublicRooms] = useState([]);
+ const [adminToken, setAdminToken] = useState();
   
 
  const [roomPass, setRoomPass] = useState("");
@@ -57,12 +58,14 @@ const Account = ({ setToken, token, name }) => {
          password: roomPassword
 
         }, token);
-      
+        
         getPublicRooms(token);
         getPrivateRooms(token);
+        setAdminToken(token);
         e.target.reset();
         console.log("aaaaaaaaa");
         console.log("room.id" + retBody.id);
+        
         
   }
 
@@ -132,11 +135,11 @@ const Account = ({ setToken, token, name }) => {
   console.log(privateRooms);
   
   if(dataRoom != null){
-    return <Room data={dataRoom}/>
+    return <Room data={dataRoom} token={token} adminToken={adminToken}/>
   } 
   if(dataRoom1 != null){
     console.log ("aici" + dataRoom1)
-    return <Room data={dataRoom1}/>
+    return <Room data={dataRoom1} token={token} adminToken={adminToken}/>
   }
 
  
@@ -303,7 +306,7 @@ const Account = ({ setToken, token, name }) => {
                 Room Pass:
                 <input type="text" onChange={e => setRoomPass(e.target.value)}/>
                 </label>
-                <button type="submit" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
+                <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
                   console.log("plm din butonb priv")
                   handleEnterPrivate()}}>Enter</button>
                 </form>
