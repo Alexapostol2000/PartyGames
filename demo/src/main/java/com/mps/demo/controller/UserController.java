@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -31,6 +29,12 @@ public class UserController {
   @PostMapping("/login")
   public ResponseEntity<Optional<UserDTO>> login(@RequestBody LoginUser loginUser) {
     return ResponseEntity.ok(userService.processLogin(loginUser));
+  }
+
+  @CrossOrigin(origins = "http://localhost:3000")
+  @GetMapping("/score/user")
+  public ResponseEntity getPublic(@RequestHeader("Authorization") String jwt) {
+    return userService.getScore(jwt);
   }
 
 }

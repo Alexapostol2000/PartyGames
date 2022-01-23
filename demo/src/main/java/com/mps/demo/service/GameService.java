@@ -70,7 +70,8 @@ public class GameService {
       return ResponseEntity.badRequest().body("The room with " + roomName + "is missing");
     }
     Room room = optionalRoom.get();
-
+    room.setGameStarted(true);
+    roomRepository.save(room);
     Game game = room.getGame();
     Object[] crunchifyKeys = game.getWordsToGuess().keySet().toArray();
     Object key = crunchifyKeys[new Random().nextInt(crunchifyKeys.length)];

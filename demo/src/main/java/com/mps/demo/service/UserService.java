@@ -1,14 +1,12 @@
 package com.mps.demo.service;
 
-import com.mps.demo.model.LoginUser;
-import com.mps.demo.model.User;
-import com.mps.demo.model.UserDTO;
-import com.mps.demo.model.UserRole;
+import com.mps.demo.model.*;
 import com.mps.demo.repository.UserRepository;
 import com.mps.demo.service.jwt.JwtUtils;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +52,16 @@ public class UserService {
     userDTO.setJwt("Bearer " + jwtUtils.generateJwtToken(loggedUser));
 
     return Optional.of(userDTO);
+  }
+
+  public ResponseEntity getScore(String jwt){
+    String userNameFromJwtToken = jwtUtils.getUserNameFromJwtToken(jwt);
+    Optional<User> optionalUser = userRepository.findByName(userNameFromJwtToken);
+    if (!optionalUser.isPresent()) {
+      log.debug("The player with username {} is missing", userNameFromJwtToken);
+      return ResponseEntity.badRequest().body("The player with username  " + userNameFromJwtToken + "is missing");
+    }
+    User user = optionalUser.get();
+    return ResponseEntity.ok(user.getTotalScore());
   }
 }

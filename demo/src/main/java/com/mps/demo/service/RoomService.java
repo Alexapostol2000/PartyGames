@@ -34,6 +34,7 @@ public class RoomService {
 
   public Room create(Room room, String jwt) {
     room.setAdminName(jwtUtils.getUserNameFromJwtToken(jwt));
+    room.setGameStarted(false);
     Room r = roomRepository.save(room);
     Game game = new Game();
     game.setId(r.getId());
