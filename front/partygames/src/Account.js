@@ -30,7 +30,7 @@ async function room(credentials, token) {
 //   setPrivateRooms(newPrivateRoomList);
 // }
 
-const Account = ({ setToken, setAdminToken, token, name }) => {
+const Account = ({ setToken, token, name }) => {
   const [room_name, setRoomName] = useState();
   const [roomType, setRoomType] = useState();
   const [maxPlayers, setMaxPlayers] = useState();
@@ -62,7 +62,6 @@ const Account = ({ setToken, setAdminToken, token, name }) => {
         getPublicRooms(token);
         getPrivateRooms(token);
         setAdminTok(token);
-        setAdminToken(token);
         e.target.reset();
         console.log("aaaaaaaaa");
         console.log("room.id" + retBody.id);
