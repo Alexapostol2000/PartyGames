@@ -11,6 +11,7 @@ import Description from './Description';
 const Game = ({ setToken,  token, adminToken, data }) => {
 
   const [word, setWord] = useState('')
+  const [solution, setSolution] = useState("")
   const [toggle, setToggle] = useState(false)
   const location = useLocation()
   const  { from } = location.state
@@ -52,7 +53,26 @@ const Game = ({ setToken,  token, adminToken, data }) => {
       setWord(mesaj)
     }
 
-   
+    async function solutionWord() {
+
+        return fetch(format('http://localhost:8080/game/solve/{0}/word/{1}', roomName, solution), {
+          method: 'POST',
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'text/plain'
+          },
+          body: solution
+        })
+          .then(data => data.json())
+       }
+       const handleSolution = async e => {
+        e.preventDefault();
+        const mesaj = await solutionWord({
+          solution
+        })
+     
+      }
+
     return (
         <>
         <div class = "container"  style={{ width: '20rem', maxHeight: 'rem', margin: '5%',
@@ -66,6 +86,17 @@ const Game = ({ setToken,  token, adminToken, data }) => {
        <div class="row" style ={{ alignContent: 'center', marginTop: '5%'}}> 
     </div>
     </div>
+    <div className="card-body text-center">
+    <form onSubmit={handleSolution}>
+      <div className="form-group">
+        <label for="exampleInputEmail1">Solution</label>
+        <input type="text" className="form-control" placeholder="Enter solution" onChange={e => setSolution(e.target.value)}/>
+        
+      </div>
+      <button type="submit" className="btn btn-dark" style ={{backgroundColor:'#631D76'}}>Submit</button>
+      </form>
+      </div>
+
         <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
                   
                   handleRound()
