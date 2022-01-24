@@ -39,8 +39,11 @@ const Game = ({ setToken,  token, adminToken, data }) => {
         },
           })
      
-          .then(data => 
-         data.text());
+          .then(data => {
+            window.location.reload(false);
+            data.text();
+          }
+         );
       //} 
       
       
@@ -70,6 +73,8 @@ const Game = ({ setToken,  token, adminToken, data }) => {
         const mesaj = await solutionWord({
           solution
         })
+        e.target.reset();
+
      
       }
 
