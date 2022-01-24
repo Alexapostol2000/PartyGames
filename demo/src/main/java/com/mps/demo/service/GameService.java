@@ -110,6 +110,7 @@ public class GameService {
     if (userNameFromJwtToken1 != null) {
       return userNameFromJwtToken1;
     }
+    room.setGameStarted(false);
 
     userRepository.save(user);
     roomRepository.save(room);
