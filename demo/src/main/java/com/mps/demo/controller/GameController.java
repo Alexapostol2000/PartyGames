@@ -40,7 +40,7 @@ public class GameController {
     }
 
     @GetMapping("/descriptionword/{roomName}")
-    public ResponseEntity getDescription(@PathVariable String roomName) {
+    public ResponseEntity<String> getDescription(@PathVariable String roomName) {
         return gameService.getDescription(roomName);
     }
 

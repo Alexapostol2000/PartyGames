@@ -93,13 +93,13 @@ const Room = ({ setToken, token, adminToken, data }) => {
 
     return (
         <>
-        <div class="row">
-        <div class="col-md-6">
-        <div class = "container"  style={{ width: '20rem', maxHeight: 'rem', margin: '5%',
-          backgroundColor: '#85BAA1', alignContent:'center', borderRadius:'2rem',  borderColor:'#d3bcc0'}}  >
-        <div className="card shadow mb-1 mx-auto text-center" />
-                  <h5 class="card-title"> Nume camera: {data.name} </h5>
-                  <h6 class="card-subtitle mb-2 text-muted"> Lista utilizatori: {roomPlayers.length} </h6>
+       
+      
+        <div class = "container"  style={{ width: '20rem', maxHeight: 'rem', marginLeft: '40%', marginTop:'7%', marginBottom:'2%',
+          backgroundColor: '#85BAA1', alignContent:'center', borderRadius:'2rem',  borderColor:'#d3bcc0', justifyContent:'center'}}  >
+        <div className="card shadow mb-1 mx-auto text-center" style ={{justifyContent:'center'}} />
+                  <h5 class="card-title"> Camera: {data.name} </h5>
+                  <h6 class="card-subtitle mb-2 text-muted"> Numar utilizatori: {roomPlayers.length} </h6>
                    {roomPlayers.map((player) =>{
                      return(
                         <ol class="list-group ">
@@ -112,19 +112,20 @@ const Room = ({ setToken, token, adminToken, data }) => {
                      )
                      })
                     }
-           <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
+           <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76', margin:'1rem'}} onClick={() => {
                   
                   handleLeave()
                   console.log("leave room")}}>Leave Room</button>
 
+      
         </div>
         <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
                   
                   handleStart()
-                  console.log(dataGame)}}>Create Game</button>
-        <Link to="/game" state={{ from: dataRoom }} className="btn btn-dark" type="button" >Go to game!</Link>
-        </div>                             
-        </div>
+                  console.log(dataGame)}}>Create a new game</button> <br></br>
+                  <br></br>
+        <Link to="/game" state={{ from: dataRoom }} style ={{backgroundColor:'#631D76'}} className="btn btn-dark" type="button" >Go to game!</Link>
+     
         </>
 
     );}
