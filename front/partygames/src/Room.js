@@ -22,7 +22,7 @@ const Room = ({ setToken, token, adminToken, data }) => {
     const roomPlayers = dataRoom.players;
     const games = dataRoom.game;
     console.log(games)
-    
+    const scoreGame = games.score
 
     async function deletePlayer(credentials, token) {
       const roomName = String(data.name);
@@ -100,18 +100,40 @@ const Room = ({ setToken, token, adminToken, data }) => {
         <div className="card shadow mb-1 mx-auto text-center" style ={{justifyContent:'center'}} />
                   <h5 class="card-title"> Camera: {data.name} </h5>
                   <h6 class="card-subtitle mb-2 text-muted"> Numar utilizatori: {roomPlayers.length} </h6>
-                   {roomPlayers.map((player) =>{
+                  <div class="row">
+                 
+                    <div class="col md-6">
+                    <div class="fw-bold" style ={{color: '#598392'}}> Playeri </div>
+                    {roomPlayers.map((player) =>{
                      return(
                         <ol class="list-group ">
+                          
                         <li class="list-group-item d-flex justify-content-between align-items-start" key = {player.id} style ={{ backgroundColor: '#85BAA1'}}>
                         
                           <div class="fw-bold" style ={{color: '#598392'}}> {player.name}</div>
-                          
                         </li>
                         </ol>
                      )
                      })
                     }
+                    </div>
+                    <div class="col md-6">
+                    <div class="fw-bold" style ={{color: '#598392'}}> Score </div>
+                    {scoreGame.map((score) =>{
+                     return(
+                        <ol class="list-group ">
+                        <li class="list-group-item d-flex justify-content-between align-items-start" key = {score.id} style ={{ backgroundColor: '#85BAA1'}}>
+                        
+                          <div class="fw-bold" style ={{color: '#598392'}}> {score.score}</div>
+                        </li>
+                        </ol>
+                     )
+                     })
+                    }
+                    </div>
+                  </div>
+              
+                         
            <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76', margin:'1rem'}} onClick={() => {
                   
                   handleLeave()

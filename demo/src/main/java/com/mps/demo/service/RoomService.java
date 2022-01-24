@@ -95,6 +95,7 @@ public class RoomService {
       return ResponseEntity.badRequest().body("The room has reached max capacity " + room.getMaxPlayerNum());
 
     }
+
     room.getPlayers().add(user);
     setCurrentPlayerNum(room);
     createNewScoreEntry(room,userNameFromJwtToken);
@@ -194,6 +195,8 @@ public class RoomService {
     }
 
     setCurrentPlayerNum(room);
+    ScoreMap score = scoreMapRepository.getScoreMapByGameIdAndUserName(room.getGame().getId(),user.getName());
+    room.getGame().getScore().remove(score);
     roomRepository.save(room);
     return ResponseEntity.ok(room);
   }
@@ -215,6 +218,9 @@ public class RoomService {
 
     Room room = optionalRoom.get();
     User user = optionalUser.get();
+
+    ScoreMap score = scoreMapRepository.getScoreMapByGameIdAndUserName(room.getGame().getId(),user.getName());
+    room.getGame().getScore().remove(score);
 
     List<User> players = room.getPlayers();
     players.remove(user);

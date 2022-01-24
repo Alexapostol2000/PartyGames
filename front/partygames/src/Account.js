@@ -38,6 +38,7 @@ const Account = ({ setToken, token, name }) => {
   const [dataRoom, setDataRoom] = useState(null);
   const [dataRoom1, setDataRoom1] = useState(null);
 
+
  const [privateRooms, setPrivateRooms] = useState([]);
  const [publicRooms, setPublicRooms] = useState([]);
  const [adminToken, setAdminTok] = useState();
@@ -147,7 +148,7 @@ const Account = ({ setToken, token, name }) => {
     return (
       <>
       <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <div class = "container"  style={{ width: '20rem', maxHeight: 'rem', margin: '5%',
         backgroundColor: '#85BAA1', alignContent:'center', borderRadius:'2rem',  borderColor:'#d3bcc0'}}  >
         <div className="card shadow mb-1 mx-auto text-center" />
@@ -197,7 +198,7 @@ const Account = ({ setToken, token, name }) => {
             
         </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
 
         <div className="card mx-auto" style ={{backgroundColor: '#598392', padding: '15px', width: '35rem', marginTop: '3rem'}}>
         <h5 class="card-title" style ={{marginBottom:'20px'}}> Public Rooms </h5>
@@ -226,8 +227,9 @@ const Account = ({ setToken, token, name }) => {
               const mesaj = await enterPublic({}, token)
               setDataRoom(mesaj)
               
-              
             }
+            
+
     
             return (
               <ol class="list-group ">
@@ -238,7 +240,13 @@ const Account = ({ setToken, token, name }) => {
                   <b>Max Players:</b> {room.maxPlayerNum}<br></br>
                   <b>Admin:</b> {room.adminName}<br></br>
                   <b>Game:</b> GuessMe<br></br>
-                  <b>Status:</b> 
+                  { room.gameStarted === true ? (
+                     <><b>Status:  </b>  in progress </>
+                  ) : (
+                   <><b> Status:  </b> not started </> 
+                  )
+                  }
+              
                 </div>
                 <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
                   
@@ -254,9 +262,9 @@ const Account = ({ setToken, token, name }) => {
         })}
         </div>
         </div>
-        <div class="row">
-        <div class="col-md-6">
-          </div>
+       
+        <div class="col-md-4">
+          
           <div class="col-md-6">
         <div className="card mx-auto" style ={{backgroundColor: '#598392', padding: '15px', width: '35rem', marginTop: '3rem'}}>
         <h5 class="card-title" style ={{marginBottom:'20px'}}> Private Rooms </h5>
@@ -297,14 +305,20 @@ const Account = ({ setToken, token, name }) => {
                   <b>Max Players:</b> {room.maxPlayerNum}<br></br>
                   <b>Admin:</b> {room.adminName}<br></br>
                   <b>Game:</b> GuessMe<br></br>
-                  <b>Status:</b> 
+                  { room.gameStarted === true ? (
+                     <><b>Status:  </b>  in progress </>
+                  ) : (
+                   <><b> Status:  </b> not started </> 
+                  )
+                  }
+              
                 </div>
 
                 <div>
                 <form >
                 <label>
                 Room Pass:
-                <input type="text" onChange={e => setRoomPass(e.target.value)}/>
+                <input type="password" onChange={e => setRoomPass(e.target.value)}/>
                 </label>
                 <button type="button" className="btn btn-dark" style ={{backgroundColor:'#631D76'}} onClick={() => {
                   console.log("plm din butonb priv")
