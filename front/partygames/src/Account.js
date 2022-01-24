@@ -44,11 +44,25 @@ const Account = ({ setToken, token, name }) => {
  const [adminToken, setAdminTok] = useState();
  
 
- const [roomPass, setRoomPass] = useState("");
+  const [roomPass, setRoomPass] = useState("");
+  const [totalScore, setTotalScore] = useState(0);
 
   //const [created, setCreated ] = useState(0);
 
-  
+  const getTotalScore = (token) => {
+    fetch('http://localhost:8080/game/score/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => response.json())
+      .then((data) => {
+        setTotalScore(data);
+        console.log(data);
+      });
+  }
   
   const handleSubmit = async e => {
     e.preventDefault();
@@ -66,7 +80,6 @@ const Account = ({ setToken, token, name }) => {
         e.target.reset();
         console.log("aaaaaaaaa");
         console.log("room.id" + retBody.id);
-        
         
   }
 
@@ -106,6 +119,7 @@ const Account = ({ setToken, token, name }) => {
   useEffect(() => {
     getPublicRooms(token);
     getPrivateRooms(token);
+    getTotalScore(token);
   }, [2000]);
 
   
@@ -154,7 +168,7 @@ const Account = ({ setToken, token, name }) => {
         <div className="card shadow mb-1 mx-auto text-center" />
                   <h5 class="card-title"> My account </h5>
                   <h6 class="card-subtitle mb-2 text-muted"> Nume player: {name} </h6>
-                  <h6 class="card-subtitle mb-2 text-muted"> Total puncte: </h6>
+                  <h6 class="card-subtitle mb-2 text-muted"> Total puncte: {name === 'guest' ? 0 : totalScore} </h6>
                    
               
                   
