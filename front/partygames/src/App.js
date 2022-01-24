@@ -18,7 +18,7 @@ import useAdminToken from './hooks/useAdminToken';
 function App() {
   const { token, setToken } = useToken();
   const { name, setName} = useName();
-  const {adminToken, setAdminToken } = useAdminToken();
+
 
   return (
     <div className="App">
@@ -28,10 +28,10 @@ function App() {
         <Route exact path="/" element = {<Home />}/>
         <Route path="/login" element = {<Login setToken={setToken} token={token}  setName={setName}/>}/>
         <Route path="/register" element = {<Register/>}/>
-        <Route path="/account" element = {<Account setToken={setToken} setAdminToken={setAdminToken} token={token}  name={name}/>}/>
+        <Route path="/account" element = {<Account setToken={setToken} token={token}  name={name}/>}/>
         <Route path="/logout" element = {<Logout setToken={setToken} token={token}/>}/>
         <Route path="/room" element = {<Room setToken={setToken} token={token}/>}/>
-        <Route path="/game" element = {<Game setToken={setToken} setAdminToken={setAdminToken} token={token} adminToken={adminToken}/>}/>
+        <Route path="/game" element = {<Game setToken={setToken} token={token}/>}/>
 
       </Routes>
       </div>
