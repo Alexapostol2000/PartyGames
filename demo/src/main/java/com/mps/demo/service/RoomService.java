@@ -96,11 +96,14 @@ public class RoomService {
 
     }
 
-    room.getPlayers().add(user);
-    setCurrentPlayerNum(room);
-    createNewScoreEntry(room,userNameFromJwtToken);
-    return ResponseEntity.ok(room);
-  }
+        if (!room.getPlayers().contains(user)) {
+            room.getPlayers().add(user);
+            setCurrentPlayerNum(room);
+            createNewScoreEntry(room, userNameFromJwtToken);
+        }
+
+        return ResponseEntity.ok(room);
+    }
 
   private boolean roomExists(String roomName, Optional<Room> optionalRoom) {
     if (!optionalRoom.isPresent()) {
@@ -139,13 +142,14 @@ public class RoomService {
 
     User user = optionalUser.get();
 
-    room.getPlayers().add(user);
-    setCurrentPlayerNum(room);
+        if (!room.getPlayers().contains(user)) {
+            room.getPlayers().add(user);
+            setCurrentPlayerNum(room);
 
-    createNewScoreEntry(room, userNameFromJwtToken);
-
-    return ResponseEntity.ok(room);
-  }
+            createNewScoreEntry(room, userNameFromJwtToken);
+        }
+        return ResponseEntity.ok(room);
+    }
 
   private void createNewScoreEntry(Room room, String userNameFromJwtToken) {
     Game game = room.getGame();
