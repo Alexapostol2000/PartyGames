@@ -14,7 +14,7 @@ const Description = ({roomName}) => {
            // 'Accept': 'text/plain;charset=UTF-8'
           },
         })
-       .then((response) => {response.json()}) 
+       .then(function(response){  return response.text()}) 
       }
     const getGuessWord = async e => {
         const mesaj = await getWord()
